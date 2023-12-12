@@ -41,8 +41,9 @@ fi
 
 start=$(date +%s)
 
-cp -r ../$ALGORITHM_DIR algorithm
-cp -r agent.py algorithm
+rm -rf algorithm
+cp -rf ../$ALGORITHM_DIR algorithm
+cp -rf agent.py algorithm
 
 if [ -d "algorithm/rootfs" ]; then
     mv algorithm/rootfs .
@@ -59,7 +60,7 @@ CUDA_VERSION=$(grep '^cuda =' algorithm/config.ini | cut -d '=' -f2 | tr -d ' ')
 
 BASE_VERSION="cuda_$CUDA_VERSION-python_$PYTHON_VERSION"
 
-docker build -t hanglok/${ALGORITHM_NAME,,}:${ALGORITHM_VERSION} . \
+docker build --no-cache -t hanglok/${ALGORITHM_NAME,,}:${ALGORITHM_VERSION} . \
 --ulimit nofile=1024000:1024000 \
 --build-arg BASE_VERSION=$BASE_VERSION \
 --build-arg NEXUS_IP=192.168.5.61
