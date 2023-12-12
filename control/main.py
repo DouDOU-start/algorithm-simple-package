@@ -4,7 +4,7 @@ import time
 from flask import Flask, jsonify, request
 import uuid
 import threading
-from docker import execute_airway, execute_body, execute_lung
+from docker import execute_docker
 from minio_client import share, upload_file
 
 app = Flask(__name__)
@@ -12,7 +12,7 @@ app = Flask(__name__)
 tasks = {}
 
 
-def execute_algorithm(task_id, model):
+def execute_algorithm(algorithm, task_id, model):
 
     start_time = time.time()
 
@@ -24,14 +24,7 @@ def execute_algorithm(task_id, model):
     # 获取 input文件minio下载地址
     input_file_url = share(f'input/{task_id}.zip')
 
-    # 执行肺分割算法
-    execute_lung(task_id, model, input_file_url)
-
-    # 执行气管分割算法
-    execute_airway(task_id, model, input_file_url)
-
-    # 执行皮肤分割算法
-    # execute_body(f'{task_id}.{extension}', input_file_url)
+    execute_docker(algorithm, task_id, model, input_file_url)
 
     # 更新任务状态和 minio下载地址
     tasks[task_id]['status'] = 'completed'
@@ -60,7 +53,17 @@ def start_task():
     try:
         model = json.loads(request.form['model'])
     except json.JSONDecodeError:
-        return jsonify({'message': 'Invalid JSON data'}), 400
+        return jsonify({'message': 'Invalid model JSON data'}), 400
+    
+    # 解析 algorithm
+    if 'algorithm' not in request.form:
+        return jsonify({'message': 'No algorithm data provided'}), 400
+
+    # 解析 JSON 数据
+    try:
+        algorithm = json.loads(request.form['algorithm'])
+    except json.JSONDecodeError:
+        return jsonify({'message': 'Invalid algorithm JSON data'}), 400
 
     # 保存文件
     task_id = str(uuid.uuid4())
@@ -71,8 +74,7 @@ def start_task():
     tasks[task_id] = {'status': 'running', 'result_file_url': None}
 
     # 启动一个线程来处理文件
-    # {"file_name":"LUOQINGHUA.mha"}
-    thread = threading.Thread(target=execute_algorithm, args=(task_id, model))
+    thread = threading.Thread(target=execute_algorithm, args=(algorithm, task_id, model))
     thread.start()
 
     return jsonify({'task_id': task_id})
