@@ -10,7 +10,7 @@ import requests
 
 # 创建一个Minio客户端对象
 client = Minio(
-    "192.168.5.61:9000",
+    "192.168.5.164:9000",
     access_key="afK2BE5BSWvayIw546b2",
     secret_key="ZRITpJds2V3lQyDb3T3t3GyA383G7npr32p9zk9x",
     secure=False
