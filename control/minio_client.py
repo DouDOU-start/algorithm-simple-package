@@ -5,7 +5,7 @@ from minio.error import S3Error
 
 # 创建一个Minio客户端对象
 client = Minio(
-    "192.168.5.164:9000",
+    "10.8.0.17:9000",
     access_key="afK2BE5BSWvayIw546b2",
     secret_key="ZRITpJds2V3lQyDb3T3t3GyA383G7npr32p9zk9x",
     secure=False
@@ -71,20 +71,20 @@ def upload_file(file_name, file_path):
         print(f"上传失败: {e}")
 
 if __name__ == "__main__":
-    # share('output/3cd80fd9-43ca-46e1-8069-df2793f49a2b/AirwaySegmentation-0.1.3/airwaysegmentation.nii.gz')
+    share('output/ffb52f9a-6328-46ef-b505-a682803b5f60/result/')
     # download_file(f'output/3cd80fd9-43ca-46e1-8069-df2793f49a2b/AirwaySegmentation-0.1.3/airwaysegmentation.nii.gz', 'tmp/airwaysegmentation.nii.gz')
 
-    task_id = '5ed38210-db0f-4024-8dba-f90e05704498'
+    # task_id = '5ed38210-db0f-4024-8dba-f90e05704498'
 
-    file_paths = [
-        f"output/{task_id}/AirwaySegmentation-0.1.3/airwaysegmentation.nii.gz", 
-        f"output/{task_id}/BodyInference-0.1.3/body_inference.nii.gz",
-        f"output/{task_id}/centerline_datastructure-1023/Centerline_polyline.txt",
-        f"output/{task_id}/LungSegmentation-0.1.3/lungsegmentation.nii.gz",
-        f"output/{task_id}/nodule_detection-2023_12_6/nodule_det.json"
-    ]
+    # file_paths = [
+    #     f"output/{task_id}/AirwaySegmentation-0.1.3/airwaysegmentation.nii.gz", 
+    #     f"output/{task_id}/BodyInference-0.1.3/body_inference.nii.gz",
+    #     f"output/{task_id}/centerline_datastructure-1023/Centerline_polyline.txt",
+    #     f"output/{task_id}/LungSegmentation-0.1.3/lungsegmentation.nii.gz",
+    #     f"output/{task_id}/nodule_detection-2023_12_6/nodule_det.json"
+    # ]
 
-    # 本地保存目录
-    local_save_dir = f"/tmp/directory/{task_id}"
+    # # 本地保存目录
+    # local_save_dir = f"/tmp/directory/{task_id}"
 
-    download_files(file_paths, local_save_dir)
+    # download_files(file_paths, local_save_dir)

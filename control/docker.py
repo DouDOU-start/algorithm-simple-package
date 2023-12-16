@@ -6,7 +6,12 @@ from utils import compress_file
 
 from minio_client import download_file, share, upload_file
 
+current_gpu = 0
+
 def execute_docker(algorithm, uid, model, input_file_url):
+
+    global current_gpu
+    gpus = ["0", "1"]
 
     while True:
         if is_gpu_free():
@@ -30,7 +35,7 @@ def execute_docker(algorithm, uid, model, input_file_url):
 
     docker_command = [
         # 使用一块显卡 "--gpus", "1",
-        "docker", "run", "--rm", "--shm-size=1g", "--gpus", '"device=1"',
+        "docker", "run", "--rm", "--shm-size=1g", "--gpus", f'"device={gpus[current_gpu]}"',
         "-e", f"EXEC_ENV={exec_env}",
         image_name
     ]
@@ -45,6 +50,9 @@ def execute_docker(algorithm, uid, model, input_file_url):
     end_time = time.time()
     execution_time = end_time - start_time
     print(f"{image_name} Execution time: {execution_time} seconds")
+
+    # 切换到下一块 GPU
+    current_gpu = (current_gpu + 1) % len(gpus)
 
 
 def centerline_execute(algorithm, uid, model, input_file_url):

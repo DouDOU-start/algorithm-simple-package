@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import zipfile
 from flask import Flask, jsonify, request
 import uuid
 import threading
@@ -34,12 +35,18 @@ def monitor_threads(task_id, start_time, threads):
     # 融合 img
     merge_img(task_id)
 
+    # 压缩 merge.mha、Centerline_polyline.txt、nodule_det.json 到 result.zip
+    with zipfile.ZipFile(f'/tmp/{task_id}/result.zip', 'w', zipfile.ZIP_DEFLATED) as zipf:
+        zipf.write(f'/tmp/{task_id}/merge.mha', 'merge.mha')
+        zipf.write(f'/tmp/{task_id}/Centerline_polyline.txt', 'Centerline_polyline.txt')
+        zipf.write(f'/tmp/{task_id}/nodule_det.json', 'nodule_det.json')
+
     # 上传中心线和肺结节结果到 result
-    upload_file(f'output/{task_id}/result/Centerline_polyline.txt', f'/tmp/{task_id}/Centerline_polyline.txt')
-    upload_file(f'output/{task_id}/result/nodule_det.json', f'/tmp/{task_id}/nodule_det.json')
+    upload_file(f'output/{task_id}/result.zip', f'/tmp/{task_id}/result.zip')
 
     tasks[task_id]['status'] = 'completed'
     tasks[task_id]['Execution time:'] = f'{time.time() - start_time} seconds'
+    tasks[task_id]['result_file_url'] = share(f'output/{task_id}/result.zip')
 
 def execute_algorithm(algorithm, task_id, model, input_file_url):
 

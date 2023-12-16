@@ -1,7 +1,6 @@
+import time
 import SimpleITK as sitk
 import numpy as np
-
-from minio_client import upload_file
 
 LabelOrganDict = {
 
@@ -43,6 +42,8 @@ OrganLabelDict = {value:key for key,value in LabelOrganDict.items()}
 
 def merge_img(task_id): 
 
+    start_time = time.time()
+
     # 获取原图 img
     lungsegmentation_img = sitk.ReadImage(f'/tmp/{task_id}/lungsegmentation.nii.gz')
     airwaysegmentation_img = sitk.ReadImage(f'/tmp/{task_id}/airwaysegmentation.nii.gz')
@@ -61,13 +62,19 @@ def merge_img(task_id):
     merge_array[airwaysegmentation_array==1]=OrganLabelDict["Airway"]
     merge_img = sitk.GetImageFromArray(merge_array)
 
+    print(np.unique(merge_array))
+
     # 复制原图信息
     merge_img.CopyInformation(lungsegmentation_img)
 
     # 保存到本地
     sitk.WriteImage(merge_img, f'/tmp/{task_id}/merge.mha')
 
+    end_time = time.time()
+    execution_time = end_time - start_time
+    print(f"fusion Execution time: {execution_time} seconds")
+
     # 上传到 minio
-    upload_file(f'output/{task_id}/result/merge.mha', f'/tmp/{task_id}/merge.mha')
+    # upload_file(f'output/{task_id}/result/merge.mha', f'/tmp/{task_id}/merge.mha')
 
 
