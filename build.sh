@@ -1,5 +1,14 @@
 #!/bin/bash
 
+cleanup() {
+    # 清理垃圾文件
+    rm -rf algorithm
+    rm -rf rootfs
+}
+
+# 设置 trap
+trap cleanup EXIT
+
 build_tip="
 ===================================================================================================
 ===================================================================================================
@@ -42,7 +51,13 @@ fi
 start=$(date +%s)
 
 rm -rf algorithm
-cp -rf ../$ALGORITHM_DIR algorithm
+
+if [ "$ALGORITHM_DIR" = "fusion" ]; then
+    cp -rf $ALGORITHM_DIR algorithm
+else
+    cp -rf ../$ALGORITHM_DIR algorithm
+fi
+
 cp -rf agent.py algorithm
 
 if [ -d "algorithm/rootfs" ]; then
@@ -64,10 +79,6 @@ docker build --no-cache -t hanglok/${ALGORITHM_NAME,,}:${ALGORITHM_VERSION} . \
 --ulimit nofile=1024000:1024000 \
 --build-arg BASE_VERSION=$BASE_VERSION \
 --build-arg NEXUS_IP=192.168.5.164
-
-# 清理垃圾文件
-rm -rf algorithm
-rm -rf rootfs
 
 end=$(date +%s)
 runtime=$((end-start))
