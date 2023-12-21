@@ -10,7 +10,7 @@ if [ $return_value -eq 1 ]; then
     exit 1
 fi
 
-task_id="888888"
+task_id="test"
 bucket_path="${mc_client}/algorithm/input/0ca9859e-255b-407b-b33f-4560ec2d95d7.mha"
 output_file="Centerline_polyline.txt"
 
