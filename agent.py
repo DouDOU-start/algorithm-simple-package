@@ -2,19 +2,27 @@ import configparser
 import json
 import os
 import sys
-from minio import Minio
 import importlib
 import requests
+from minio import Minio
 
-# 创建一个Minio客户端对象
-client = Minio(
-    "192.168.5.164:9000",
-    access_key="afK2BE5BSWvayIw546b2",
-    secret_key="ZRITpJds2V3lQyDb3T3t3GyA383G7npr32p9zk9x",
-    secure=False
-)
+def init_client():
+    minio_env = os.environ.get('MINIO_ENV')
 
-# 设置桶和对象名称
+    if minio_env:
+        minio_config = json.loads(minio_env)
+        return Minio(
+            minio_config["url"],
+            access_key=minio_config["access_key"],
+            secret_key=minio_config["secret_key"],
+            secure=False
+        )
+    else:
+        print("No MINIO_ENV found")
+        sys.exit(1)
+     
+
+# # 设置桶和对象名称
 bucket_name = "algorithm"
 
 class Agent:
@@ -48,13 +56,13 @@ class Agent:
 
     def run(self):
         self.mkdir_floder()
-        self.download_file()
+        # self.download_file()
         self.execute_algorithm()
         self.upload_result()
 
     def mkdir_floder(self):
         # 创建 task_id文件夹
-        os.makedirs(f'/tmp/{self.model["task_id"]}')
+        # os.makedirs(f'/tmp/{self.model["task_id"]}')
         os.makedirs(f'/tmp/{self.model["task_id"]}-out')
 
     def download_file(self):
@@ -87,7 +95,7 @@ class Agent:
     
     def execute_algorithm(self):
         algo_module = importlib.import_module("algorithm")
-        algo_module.AgentImpl.run(self.model)
+        algo_module.AgentImpl.run(self, self.model)
     
     def upload_result(self):
         config = configparser.ConfigParser()
@@ -104,6 +112,8 @@ class Agent:
             if os.path.isfile(file_path):
                 # 目标文件路径（在 MinIO 中）
                 target_path = os.path.join(target_directory, filename)
+
+                client = init_client()
         
                 # 上传文件
                 client.fput_object(bucket_name, target_path, file_path)

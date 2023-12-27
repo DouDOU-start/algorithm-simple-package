@@ -1,5 +1,5 @@
 from merge import merge_img
 
 class AgentImpl:
-    def run(model=None):
+    def run(self, model=None):
         merge_img(model)

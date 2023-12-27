@@ -1,6 +1,7 @@
 import time
 import SimpleITK as sitk
 import numpy as np
+from minio_util import init_client, load_stk_image
 
 LabelOrganDict = {
 
@@ -51,7 +52,9 @@ def merge_img(model):
 
     # 遍历 algo
     for index, algo in enumerate(model["input"]):
-        algo_img = sitk.ReadImage(algo["file"])
+        client = init_client()
+        algo_img = load_stk_image(client, "algorithm", algo["object_name"])
+        # algo_img = readImageFromMinio(algo["object_name"])
         algo_array = sitk.GetArrayFromImage(algo_img)
 
         # 初始化merge_array
