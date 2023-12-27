@@ -41,7 +41,7 @@
         "task_id": "888888",
         "input": [
             {
-                "url": "http://192.168.5.164:9000/algorithm/input/b511953c-faa2-4c69-98ff-f45282fde26b.nii.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=afK2BE5BSWvayIw546b2%2F20231220%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231220T085445Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=60a590df0ae92cb667758cffe0c3f8e2ac1c9519da587ec0d36abaf64fc053dd"
+                "object_name": "input/1be96038-e76a-41b4-a594-b378f7b5e750.mha"
             }
         ],
         "output": "lungsegmentation.nii.gz"
