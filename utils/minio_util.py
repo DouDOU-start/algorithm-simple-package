@@ -7,20 +7,20 @@ import SimpleITK as sitk
 
 
 def init_client():
-    client_env = os.environ.get('MINIO_ENV')
+    minio_env = os.environ.get('MINIO_ENV')
 
-    if client_env:
-        json.loads(client_env)
+    if minio_env:
+        minio_config = json.loads(minio_env)
+
+        return Minio(
+            minio_config["url"],
+            access_key=minio_config["access_key"],
+            secret_key=minio_config["secret_key"],
+            secure=False
+        )
     else:
         print("No MINIO_ENV found")
-        sys.exit(1)
-
-    return Minio(
-        client_env.url,
-        access_key=client_env.access_key,
-        secret_key=client_env.secret_key,
-        secure=False
-    )       
+        sys.exit(1)            
 
 
 def load_stk_image(client: Minio, bucket_name, object_name):
