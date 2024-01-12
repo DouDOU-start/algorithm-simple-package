@@ -78,7 +78,7 @@ BASE_VERSION="cuda_$CUDA_VERSION-python_$PYTHON_VERSION"
 docker build --no-cache -t hanglok/${ALGORITHM_NAME,,}:${ALGORITHM_VERSION} . \
 --ulimit nofile=1024000:1024000 \
 --build-arg BASE_VERSION=$BASE_VERSION \
---build-arg NEXUS_IP=192.168.5.164
+--build-arg NEXUS_IP=192.168.31.213
 
 end=$(date +%s)
 runtime=$((end-start))
