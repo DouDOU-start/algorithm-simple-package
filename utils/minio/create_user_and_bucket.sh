@@ -73,7 +73,11 @@ function create_user {
 
 }
 
-# NEW_USER=hantao
-# NEW_PASSWORD=hanglok@8888
+users=(
+  test
+  test1
+)
 
-# create_user $NEW_USER $NEW_PASSWORD
+for NEW_USER in "${users[@]}"; do
+  create_user $NEW_USER hanglok@8888
+done
