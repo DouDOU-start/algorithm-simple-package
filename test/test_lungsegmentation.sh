@@ -28,7 +28,7 @@
 
 images=10.8.6.34:5000/algorithm/lungsegmentation:0.1.3
 
-docker pull $imagess
+docker pull $images
 
 exec_env=$(jq -r '.lungsegmentation' exec_env.json)
 minio_env=$(jq -r '.minio_env' exec_env.json)
