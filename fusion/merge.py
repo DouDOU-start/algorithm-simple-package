@@ -1,7 +1,6 @@
 import time
 import SimpleITK as sitk
 import numpy as np
-from minio_util import init_client, load_stk_image
 
 LabelOrganDict = {
 
@@ -46,26 +45,31 @@ def merge_img(model):
 
     start_time = time.time()
 
-    length = len(model["input"])
+    length = len(model["args"]["label"])
     merge_array = None
     merge_img = None
 
-    # 遍历 algo
-    for index, algo in enumerate(model["input"]):
-        client = init_client()
-        algo_img = load_stk_image(client, "algorithm", algo["object_name"])
-        # algo_img = readImageFromMinio(algo["object_name"])
-        algo_array = sitk.GetArrayFromImage(algo_img)
+    for index, item in enumerate(model["args"]["label"]):
+        # 遍历字典中的文件名和标签值
+        for filename, attributes in item.items():
+            algo_img = sitk.ReadImage(f'/tmp/{model["task_id"]}/{filename}')
+            algo_array = sitk.GetArrayFromImage(algo_img)
 
-        # 初始化merge_array
-        if merge_array is None:
-            merge_array = np.zeros(algo_array.shape)
+            # 初始化merge_array
+            if merge_array is None:
+                merge_array = np.zeros(algo_array.shape)
+
+            print(f"index{index + 1}: {filename}")
+            
+            # 判断属性是否为字典
+            if isinstance(attributes, dict):
+                # 融合label
+                for organ, label_value in attributes.items():
+                    merge_array[algo_array==label_value]=OrganLabelDict[organ]
+            else:
+                # 如果不是字典，直接打印值
+                print(f"Error Value: {attributes}")
         
-        # 融合label
-        for label in algo["label"]:
-            for organ, label_value in label.items():
-                merge_array[algo_array==label_value]=OrganLabelDict[organ]
-
         if index == length - 1:
             # 从融合array中获取新的img数据
             merge_img = sitk.GetImageFromArray(merge_array)
@@ -73,7 +77,7 @@ def merge_img(model):
             merge_img.CopyInformation(algo_img)
 
     # 保存到本地
-    sitk.WriteImage(merge_img, f'/tmp/{model["task_id"]}-out/{model["output"]}', True)
+    sitk.WriteImage(merge_img, f'/tmp/{model["task_id"]}-out/{model["args"]["output"]}', True)
 
     print(f'unique: {np.unique(merge_array)}')
 

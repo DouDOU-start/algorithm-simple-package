@@ -5,81 +5,77 @@
         "secret_key": "ZRITpJds2V3lQyDb3T3t3GyA383G7npr32p9zk9x"
     },
     "fusion": {
-        "task_id": "1227test",
-        "input": [
-            {
-                "object_name": "output/547bc2a6-f6a1-406b-a0f7-ce754e87591a/BodyInference-0.1.3/body_inference.nii.gz",
-                "label": [
-                    {
-                        "Skin": 3
-                    },
-                    {
-                        "Bone": 2
-                    }
-                ]
-            },
-            {
-                "object_name": "output/547bc2a6-f6a1-406b-a0f7-ce754e87591a/LungSegmentation-0.1.3/lungsegmentation.nii.gz",
-                "label": [
-                    {
-                        "Lung": true
-                    }
-                ]
-            },
-            {
-                "object_name": "output/547bc2a6-f6a1-406b-a0f7-ce754e87591a/AirwaySegmentation-0.1.3-jcxiong/airwaysegmentation.nii.gz",
-                "label": [
-                    {
-                        "Airway": 1
-                    }
-                ]
-            }
-        ],
-        "output": "segmentation.mha"
+        "task_id": "888888",
+        "args": {
+            "label": [
+              {
+                "body_inference.nii.gz": {
+                  "Skin": 3,
+                  "Bone": 2
+                }
+              },
+              {
+                "lungsegmentation.nii.gz": {
+                  "Lung": true
+                }
+              },
+              {
+                "airwaysegmentation.nii.gz": {
+                  "Airway": 1
+                }
+              }
+            ],
+            "output": "segmentation.mha"
+          },
+          "inputFile": {
+            "body_inference.nii.gz": "body_inference.nii.gz",
+            "lungsegmentation.nii.gz": "lungsegmentation.nii.gz",
+            "airwaysegmentation.nii.gz": "airwaysegmentation.nii.gz"
+          }
     },
     "lungsegmentation": {
         "task_id": "888888",
-        "input": [
-            {
-                "object_name": "input/06d00764-7ace-4138-a54e-891cc83119db/BAO LAN ZHEN.nii.gz"
-            }
-        ],
-        "output": "lungsegmentation.nii.gz"
+        "args": {
+            "output": "lungsegmentation.nii.gz"
+        },
+        "inputFile": {
+            "input": "BAO LAN ZHEN.nii.gz"
+        }
     },
     "airwaysegmentation": {
         "task_id": "888888",
-        "input": [
-            {
-                "object_name": "input/06d00764-7ace-4138-a54e-891cc83119db/BAO LAN ZHEN.nii.gz"
-            }
-        ],
-        "output": "airwaysegmentation.nii.gz"
+        "args": {
+            "output": "airwaysegmentation.nii.gz"
+        },
+        "inputFile": {
+            "input": "BAO LAN ZHEN.nii.gz"
+        }
     },
     "bodyinference": {
         "task_id": "888888",
-        "input": [
-            {
-                "object_name": "input/06d00764-7ace-4138-a54e-891cc83119db/BAO LAN ZHEN.nii.gz"
-            }
-        ],
-        "output": "body_inference.nii.gz"
+        "args": {
+            "output": "body_inference.nii.gz"
+        },
+        "inputFile": {
+            "input": "BAO LAN ZHEN.nii.gz"
+        }
     },
     "centerline_datastructure": {
         "task_id": "888888",
-        "input": [
-            {
-                "object_name": "output/888888/airwaysegmentation-0.1.3-jcxiong/airwaysegmentation.nii.gz"
-            }
-        ],
-        "output": "Centerline_polyline.txt"
+        "args": {
+            "output": "Centerline_polyline.txt"
+        },
+        "inputFile": {
+            "input": "airwaysegmentation.nii.gz"
+        }
     },
     "nodule_det": {
         "task_id": "888888",
-        "input": [
-            {
-                "object_name": "input/06d00764-7ace-4138-a54e-891cc83119db/BAO LAN ZHEN.nii.gz"
-            }
-        ],
-        "output": "nodule_det.json"
+        "args": {
+            "output": "nodule_det.json"
+        },
+        "inputFile": {
+            "input": "BAO LAN ZHEN.nii.gz"
+        }
     }
 }
