@@ -26,10 +26,14 @@
 #                     output: $output
 #                 }')
 
+images=10.8.6.34:5000/algorithm/lungsegmentation:0.1.3
+
+docker pull $imagess
+
 exec_env=$(jq -r '.lungsegmentation' exec_env.json)
 minio_env=$(jq -r '.minio_env' exec_env.json)
 
 docker run --rm --shm-size=1g --gpus 1 \
 -e EXEC_ENV="$exec_env" \
 -e MINIO_ENV="$minio_env" \
-hanglok/lungsegmentation:0.1.3
+$images

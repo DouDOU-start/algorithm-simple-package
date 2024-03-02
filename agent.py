@@ -104,7 +104,7 @@ class Agent:
         algorithm_version = config['info']['version']
 
         output_file_path = f'/tmp/{self.model["task_id"]}-out'
-        target_directory = f'output/{self.model["task_id"]}/{algorithm_name}-{algorithm_version}/'
+        target_directory = f'output/{self.model["task_id"]}/{algorithm_name.lower()}-{algorithm_version}/'
 
         # 遍历 'output_file_path' 目录中的文件
         for filename in os.listdir(output_file_path):

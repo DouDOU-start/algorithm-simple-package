@@ -1,6 +1,6 @@
 {
     "minio_env": {
-        "url": "192.168.31.213:9000",
+        "url": "10.8.6.60:9000",
         "access_key": "afK2BE5BSWvayIw546b2",
         "secret_key": "ZRITpJds2V3lQyDb3T3t3GyA383G7npr32p9zk9x"
     },
@@ -68,7 +68,7 @@
         "task_id": "888888",
         "input": [
             {
-                "object_name": "output/888888/AirwaySegmentation-0.1.3-jcxiong/airwaysegmentation.nii.gz"
+                "object_name": "output/888888/airwaysegmentation-0.1.3-jcxiong/airwaysegmentation.nii.gz"
             }
         ],
         "output": "Centerline_polyline.txt"

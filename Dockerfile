@@ -1,6 +1,6 @@
 ARG BASE_VERSION
 
-FROM hanglok/algorithm-base:${BASE_VERSION}
+FROM 10.8.6.34:5000/hanglok/algorithm-base:${BASE_VERSION}
 
 COPY rootfs /
 COPY algorithm /algorithm

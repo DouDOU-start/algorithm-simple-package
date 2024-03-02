@@ -75,10 +75,10 @@ CUDA_VERSION=$(grep '^cuda =' algorithm/config.ini | cut -d '=' -f2 | tr -d ' ')
 
 BASE_VERSION="cuda_$CUDA_VERSION-python_$PYTHON_VERSION"
 
-docker build --no-cache -t hanglok/${ALGORITHM_NAME,,}:${ALGORITHM_VERSION} . \
+docker build --no-cache -t 10.8.6.34:5000/algorithm/${ALGORITHM_NAME,,}:${ALGORITHM_VERSION} . \
 --ulimit nofile=1024000:1024000 \
 --build-arg BASE_VERSION=$BASE_VERSION \
---build-arg NEXUS_IP=192.168.31.213
+--build-arg NEXUS_IP=10.8.6.60
 
 end=$(date +%s)
 runtime=$((end-start))
