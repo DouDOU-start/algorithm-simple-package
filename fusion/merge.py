@@ -1,43 +1,68 @@
 import time
 import SimpleITK as sitk
 import numpy as np
+import pymysql
 
-LabelOrganDict = {
+# LabelOrganDict = {
 
-    1000: "Marker",
+#     1000: "Marker",
 
-    2000: "AllTumor",
-    2001: "TumorStart",
-    2999: "TumorEnd",
+#     2000: "AllTumor",
+#     2001: "TumorStart",
+#     2999: "TumorEnd",
 
-    3000: "Liver",
-    4000: "Spleen",
+#     3000: "Liver",
+#     4000: "Spleen",
 
-    5000: "Kidney",
-    5001: "LeftKidney",
-    5002: "RightKidney",
+#     5000: "Kidney",
+#     5001: "LeftKidney",
+#     5002: "RightKidney",
     
-    6000: "Gallbladder",
-    7000: "Esophagus",
-    8000: "Stomach",
-    9000: "Aorta",
-    10000: "InferiorVenaCava",
-    11000: "PortalVeinAndSplenicVein",
-    12000: "Pancreas",
+#     6000: "Gallbladder",
+#     7000: "Esophagus",
+#     8000: "Stomach",
+#     9000: "Aorta",
+#     10000: "InferiorVenaCava",
+#     11000: "PortalVeinAndSplenicVein",
+#     12000: "Pancreas",
 
-    13000:"AdrenalGland",
-    13001: "LeftAdrenalGland",
-    13002: "RightAdrenalGland",
+#     13000:"AdrenalGland",
+#     13001: "LeftAdrenalGland",
+#     13002: "RightAdrenalGland",
 
-    14000: "HepaticVessel",
-    15000: "Bone",
-    16000: "Skin",
+#     14000: "HepaticVessel",
+#     15000: "Bone",
+#     16000: "Skin",
 
-    17000: "Lung",
-    17001: "LeftLung",
-    17002: "RightLung",
-    18000: "Airway",
+#     17000: "Lung",
+#     17001: "LeftLung",
+#     17002: "RightLung",
+#     18000: "Airway",
+# }
+
+db_config = {
+    "host": "10.8.6.34",
+    "port": 3366,
+    "user": "root",
+    "password": "hanglok8888",
+    "database": "algorithm_scheduling_dev",
+    "charset": "utf8mb4"
 }
+
+connection = pymysql.connect(**db_config)
+
+print("database connection successful")
+
+try:
+    with connection.cursor() as cursor:
+        sql = "SELECT label, name FROM organ"
+        cursor.execute(sql)
+
+        organ_data = [{"label": row[0], "name": row[1]} for row in cursor.fetchall()]
+finally:
+    connection.close()
+
+LabelOrganDict = {item["label"]: item["name"] for item in organ_data}
 
 OrganLabelDict = {value:key for key,value in LabelOrganDict.items()}
 
