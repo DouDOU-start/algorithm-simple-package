@@ -68,10 +68,10 @@ if [ ! -d "rootfs" ]; then
 	mkdir -p "rootfs"
 fi
 
-ALGORITHM_NAME=$(grep '^name =' algorithm/config.ini | cut -d '=' -f2 | tr -d ' ')
-ALGORITHM_VERSION=$(grep '^version =' algorithm/config.ini | cut -d '=' -f2 | tr -d ' ')
-PYTHON_VERSION=$(grep '^python =' algorithm/config.ini | cut -d '=' -f2 | tr -d ' ')
-CUDA_VERSION=$(grep '^cuda =' algorithm/config.ini | cut -d '=' -f2 | tr -d ' ')
+ALGORITHM_NAME=$(grep '^name =' algorithm/config.ini | cut -d '=' -f2 | tr -d ' \r')
+ALGORITHM_VERSION=$(grep '^version =' algorithm/config.ini | cut -d '=' -f2 | tr -d ' \r')
+PYTHON_VERSION=$(grep '^python =' algorithm/config.ini | cut -d '=' -f2 | tr -d ' \r')
+CUDA_VERSION=$(grep '^cuda =' algorithm/config.ini | cut -d '=' -f2 | tr -d ' \r')
 
 BASE_VERSION="cuda_$CUDA_VERSION-python_$PYTHON_VERSION"
 

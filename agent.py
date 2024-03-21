@@ -1,7 +1,10 @@
+import io
 import json
 import os
 import sys
 import importlib
+import requests
+import json
 from minio import Minio, S3Error
 
 def init_client():
@@ -24,6 +27,13 @@ client = init_client()
 # 设置桶对象名称
 bucket_name = "algorithm"
 
+# 保存原始的 stdout 方便之后恢复
+original_stdout = sys.stdout
+# 创建一个 StringIO 对象用于捕获输出
+captured_output = io.StringIO()
+# 将 stdout 重定向到 StringIO 对象
+sys.stdout = captured_output        
+
 class Agent:
 
     def __init__(self):
@@ -41,12 +51,14 @@ class Agent:
             {
                 "task_id": "",
                 "args": {
-                    "output": ""
-                    "callback": ""
-                }
+                },
                 "inputFile": {
                     "input": ""
-                }
+                },
+                "outputFile": {
+                    "output": ""
+                },
+                "callback": ""
             },
         }
         '''
@@ -54,8 +66,13 @@ class Agent:
     def run(self):
         self.mkdir_floder()
         self.download_file()
-        self.execute_algorithm()
+        try:
+            self.execute_algorithm()
+        except Exception as e:
+            print(f"Algorithm execute error: {e}")
+            self.callback(is_success=False)
         self.upload_result()
+        self.callback()
 
     def mkdir_floder(self):
         # 创建 task_id文件夹
@@ -70,6 +87,7 @@ class Agent:
                 print(f"{file} was successfully downloaded to '{file_path}'.")
             except S3Error as e:
                 print(f"An error occurred while downloading the file: {e}")
+                self.callback(is_success=False)
     
     def execute_algorithm(self):
         algo_module = importlib.import_module("algorithm")
@@ -96,6 +114,31 @@ class Agent:
                 print(f"Uploaded {file_path} to {target_path}")
 
         print("All files uploaded.")
+
+    def callback(self, is_success=True):
+
+        # 恢复原始的 stdout
+        sys.stdout = original_stdout
+        # 获取并打印捕获的输出内容
+        captured_content = captured_output.getvalue()
+
+        print({
+            'task_id': self.model["task_id"],
+            'is_success': is_success,
+            'logg': captured_content
+        })
+
+        data = {
+            'taskId': self.model["task_id"],
+            'image': self.model["image"],
+            'isSuccess': is_success,
+            'stdout': captured_content
+        }
+        url = self.model["callback"]
+        response = requests.post(url, json=data, verify=False)  # 注意这里是使用 json 参数
+
+        # 打印响应的文本内容
+        print(response.text)
 
 
 def main():
