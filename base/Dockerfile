@@ -8,7 +8,7 @@ RUN apt update && \
         wget vim net-tools \
         build-essential libssl-dev zlib1g-dev libncurses5-dev libncursesw5-dev \
         libbz2-dev liblzma-dev libffi-dev libgdbm-dev libsqlite3-dev libreadline-dev \
-        libgl1-mesa-glx libxrender1 && \
+        libgl1-mesa-glx libxrender1 libglib2.0-0 && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 

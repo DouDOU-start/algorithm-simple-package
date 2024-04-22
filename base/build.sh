@@ -18,7 +18,7 @@ VERSION="cuda_$CUDA_VERSION-python_$PYTHON_VERSION"
 IMAGE_NAME="algorithm-base"
 
 # 加速构建镜像 --ulimit nofile=1024000:1024000
-docker build -t hanglok/${IMAGE_NAME}:${VERSION} . \
+docker build -t 10.8.6.34:5000/hanglok/${IMAGE_NAME}:${VERSION} . \
 --ulimit nofile=1024000:1024000 \
 --build-arg CUDA_VERSION=$CUDA_VERSION \
 --build-arg PYTHON_VERSION=$PYTHON_VERSION
