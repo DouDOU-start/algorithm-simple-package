@@ -2,7 +2,7 @@
 
 images=10.8.6.34:5000/algorithm/nodule_detection:2023_12_6
 
-docker pull $images
+# docker pull $images
 
 exec_env=$(jq -r '.nodule_det' exec_env.json)
 minio_env=$(jq -r '.minio_env' exec_env.json)

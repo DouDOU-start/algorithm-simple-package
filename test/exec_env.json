@@ -5,23 +5,18 @@
         "secret_key": "ZRITpJds2V3lQyDb3T3t3GyA383G7npr32p9zk9x"
     },
     "fusion": {
-        "task_id": "888888",
+        "task_id": "a5fd02a6-18b6-4146-bc9f-0436c9f94ef1",
         "args": {
             "label": [
               {
                 "body_inference.nii.gz": {
-                  "Skin": 3,
-                  "Bone": 2
+                  "16000": "Skin",
+                  "15000": "Bone" 
                 }
               },
               {
                 "lungsegmentation.nii.gz": {
-                  "Lung": true
-                }
-              },
-              {
-                "airwaysegmentation.nii.gz": {
-                  "Airway": 1
+                  "1": "Lung"
                 }
               }
             ],
@@ -29,8 +24,7 @@
           },
           "inputFile": {
             "body_inference.nii.gz": "body_inference.nii.gz",
-            "lungsegmentation.nii.gz": "lungsegmentation.nii.gz",
-            "airwaysegmentation.nii.gz": "airwaysegmentation.nii.gz"
+            "lungsegmentation.nii.gz": "lungsegmentation.nii.gz"
           }
     },
     "lungsegmentation": {
@@ -52,13 +46,15 @@
         }
     },
     "bodyinference": {
-        "task_id": "888888",
-        "args": {
-            "output": "body_inference.nii.gz"
-        },
+        "task_id": "747a3315-ca83-4c07-bc0a-5d4cfb1258e5",
+        "image": "10.8.6.34:5000/algorithm/liverboneskinsegmentation:wfz-240102",
         "inputFile": {
-            "input": "BAO LAN ZHEN.nii.gz"
-        }
+          "input": "origin.mha"
+        },
+        "outputFile": {
+          "output": "body_inference.nii.gz"
+        },
+        "callback": "http://10.8.6.60:8088/assemble/callback"
     },
     "centerline_datastructure": {
         "task_id": "888888",
@@ -76,6 +72,17 @@
         },
         "inputFile": {
             "input": "BAO LAN ZHEN.nii.gz"
+        }
+    },
+    "lung_nodule_segmentation": {
+        "task_id": "888888",
+        "args": {
+        },
+        "inputFile": {
+            "input": "BAO LAN ZHEN.nii.gz"
+        },
+        "outputFile": {
+            "output": "noduleseg.nii.gz"
         }
     }
 }

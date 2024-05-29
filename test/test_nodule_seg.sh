@@ -1,11 +1,10 @@
 #!/bin/bash
 
-images=10.8.6.34:5000/algorithm/airwaysegmentation:jcx-240311
-# images=10.8.6.34:5000/algorithm/airwaysegmentation:0.1.3-jcxiong
+images=10.8.6.34:5000/algorithm/lung_nodule_segmentation:2024_2_20
 
 # docker pull $images
 
-exec_env=$(jq -r '.airwaysegmentation' exec_env.json)
+exec_env=$(jq -r '.lung_nodule_segmentation' exec_env.json)
 minio_env=$(jq -r '.minio_env' exec_env.json)
 
 docker run --rm --shm-size=1g --gpus 1 \
