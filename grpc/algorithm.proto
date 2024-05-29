@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package algorithm;
+
+message InputCTData {
+  repeated int32 shape = 1;   // 数组形状
+  bytes data = 2;             // 扁平化后的数组数据
+  string dtype = 3;           // 数组数据类型
+}
+
+message OutputUSData {
+  repeated int32 shape = 1;   // 数组形状
+  bytes data = 2;             // 扁平化后的数组数据
+  string dtype = 3;           // 数组数据类型
+}
+
+service AlgotirhmService {
+  rpc Execute (InputCTData) returns (OutputUSData) {}
+}
