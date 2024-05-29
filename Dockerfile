@@ -10,7 +10,8 @@ WORKDIR /algorithm
 ARG NEXUS_IP
 
 RUN pip install --upgrade pip --trusted-host ${NEXUS_IP} -i http://${NEXUS_IP}:8081/repository/group-pypi/simple && \
-    pip install --no-cache-dir -r requirements.txt --trusted-host ${NEXUS_IP} -i http://${NEXUS_IP}:8081/repository/group-pypi/simple && \
+    pip install --no-cache-dir -r requirements.txt --trusted-host ${NEXUS_IP} -i http://${NEXUS_IP}:8081/repository/group-pypi/simple \
+    -f https://download.pytorch.org/whl/torch_stable.html && \
     pip install minio requests --trusted-host ${NEXUS_IP} -i http://${NEXUS_IP}:8081/repository/group-pypi/simple
 
 
